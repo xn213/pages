@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src='https://unpkg.com/vue@2.6.8/dist/vue.min.js'></script>
+  <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+  <!-- <script src="https://github.com/niklasvh/html2canvas/releases/download/v1.0.0-rc.3/html2canvas.min.js"></script> -->
+  <!-- <script src="./js/html2canvas.min.js"></script> -->
+  <title>背景图片制作</title>
+  <style>
+    *{margin:0;padding:0;}
+    #app {
+      text-align: center;
+    }
+    .input-box {
+      padding-top: 21px;
+    }
+    .input-box input {
+      width: 213px;
+      height: 36px;
+      line-height: 36px;
+      border: 1px solid #b45dea;
+      text-indent: 13px;
+    }
+    .content {
+      width: 750px;
+      height: 320px;
+      text-align: center;
+      line-height: 270px;
+      color: white;
+      font-size: 66px;
+      margin: 0 auto;
+    }
+    .content span{
+      padding: 0 13px;
+    }
+    .content, .default-btn a, .btn a {
+      /* 左上角到右下角的线性渐变 */
+      background: -webkit-linear-gradient(left top, #b45dea, #f300af);
+    }
+    .default-btn a, .btn a {
+      display: inline-block;
+      text-decoration: none;
+      margin: 13px auto;
+      width: 213px;
+      height: 36px;
+      line-height: 36px;
+      /* border: 1px solid #b45dea; */
+      color: #fff;
+      border-radius: 32px;
+      /* user-select:none; */
+      cursor: pointer;
+    }
+    #color1, #color2 {
+      position: absolute;
+      left: -2113px;
+    }
+
+    footer {
+      padding: 13px;
+      width: 725px;
+      margin: 0 auto;
+      text-align: left;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="input-box">
+      content: 
+      <input type="text" v-model="inputValue" placeholder="请输入内容"> - 宽: 
+      <input type="text" onkeypress="return event.keyCode>=48&&event.keyCode<=57" ng-pattern="/[^a-zA-Z]/" v-model="width" placeholder="请输入宽度"> * 高: 
+      <input type="text" onkeypress="return event.keyCode>=48&&event.keyCode<=57" ng-pattern="/[^a-zA-Z]/" v-model="height" placeholder="请输入高度">
+    </div>
+
+    <div class="default-btn">
+      <!-- input:type=color 值存的是上次更改的 ... to do -->
+      <input type="color" id="color1" :value="colorValue1">
+      <input type="color" id="color2" :value="colorValue2">
+      <a @click="color1">选择颜色1</a>
+      <a @click="color2">选择颜色2</a>
+      <a @click="slt">缩略图: 750×320</a>
+      <a @click="cover">cover: 1366×152</a>
+    </div>
+
+    <div class="content" :style="contentStyle">{{ leftText }}<span v-if="inputValue">-</span>{{ rightText }}</div>
+    
+    <div class="btn">
+      <a @click="getCover">生成背景</a>
+      <a class="download-btn" :download="downloadFileName">保存背景</a>
+    </div>
+    
+    <footer>
+      <div class="todo">
+        <h3>To Do... 待完善:</h3>
+        <ol>
+          <li>to fix 就想使用 input:type=color, value为上次选择颜色, 不同步 ; 动态设置背景渐变 无效? </li>
+          <li><del>to fix 单击生成图片地址, 再次单击出发 a 标签的download 下载图片</del></li>
+          <li><del>to fix 更换内容, 需要点击重新生成图片新地址, 再次单击触发a标签的 download</del></li>
+        </ol>
+      </div>
+      <div class="fix">
+        <h3>Fix: 2, 3</h3>
+        <p>fix: 使用两个标签, 一个生成图片地址添加给 下载 a 标签</p>
+      </div>
+    </footer>
+  </div>
+</body>
+  <script>
+    new Vue({
+      el: "#app",
+      data:{
+        inputValue: 'FE-Notes',
+        width: 750,
+        height: 320,
+        colorValue: '',
+        colorValue1: '#b45dea',
+        colorValue2: '#f300af',
+        bg: ''
+      },
+      computed: {
+        leftText(){
+          return this.inputValue.split('-')[0]
+        },
+        rightText(){
+          return this.inputValue.split('-')[1]
+        },
+        contentStyle(){
+          return 'font-size: ' + this.height * 2/10 +'px; width: ' + this.width + 'px; height: ' + this.height + 'px; line-height: ' + this.height * 7/8 + 'px;'
+        },
+        downloadFileName(){
+          return this.inputValue ? this.inputValue + '.png' : 'title-cover.png'
+        }
+      },
+      created(){
+        // this.color1()
+        // this.color2()
+      },
+      methods: {
+        // 基于 html2canvas.js 生成图片
+        getCover(){
+          html2canvas(document.querySelector(".content")).then(canvas => {
+            // document.body.appendChild(canvas)
+            const url = canvas.toDataURL('image/png')
+            const abtn = document.querySelector(".download-btn")
+            abtn.href = url
+          });
+        },
+        // 缩略图 宽高
+        slt(){
+          this.width = 750
+          this.height = 320
+        },
+        // 文章详情页宽度
+        cover(){
+          this.inputValue = ''
+          this.width = 1366
+          this.height = 152
+        },
+        color1(){
+          let that = this
+          const colorEle = document.querySelector('#color1')
+          console.log(colorEle.value)
+          colorEle.click();
+          function watchColorPicker(e) {
+            that.colorValue1 = e.target.value
+          }
+          colorEle.addEventListener("change", watchColorPicker, false);
+          // colorEle.onchange = function(){
+          //   that.colorValue1 = this.value
+          // }
+          // this.colorValue1 = this.colorValue
+          // const aElements = document.querySelectorAll('a')
+          const content = document.querySelector('.content')
+          let colorValue1 = this.colorValue1
+          let bg1 = `-webkit-linear-gradient(left top, ${colorValue1}, ${this.colorValue2}) !important;`
+          this.bg = bg1
+          console.log(this.bg)
+          content.style.backgroundColor = this.bg
+          // aElements.forEach(element => {
+          //   element.style.background = background
+          // });
+        },
+        color2(){
+          let that = this
+          const colorEle = document.querySelector('#color2')
+          colorEle.click();
+          colorEle.onchange = function(){
+            that.colorValue2 = this.value
+          }
+          // this.colorValue2 = this.colorValue
+          // const aElements = document.querySelectorAll('a')
+          const content = document.querySelector('.content')
+          let background = `-webkit-linear-gradient(left top, ${this.colorValue1}, ${this.colorValue2}) !important;`
+          console.log(background)
+          content.style.background = background
+          // aElements.forEach(element => {
+          //   element.style.backgroundColor = background
+          // });
+        },
+        // getColor(id){
+        //   let that = this
+        //   const colorEle = document.querySelector(id)
+        //   colorEle.click();
+        //   colorEle.onchange = function(){
+        //     that.colorValue = this.value
+        //   }
+        // }
+      }
+    })
+</script>
+</html>
