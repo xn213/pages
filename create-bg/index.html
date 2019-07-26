@@ -26,9 +26,9 @@
     }
     .content {
       width: 750px;
-      height: 320px;
+      height: 213px;
       text-align: center;
-      line-height: 270px;
+      line-height: 186px;
       color: white;
       font-size: 66px;
       margin: 0 auto;
@@ -82,7 +82,7 @@
       <input type="color" id="color2" :value="colorValue2">
       <a @click="color1">选择颜色1</a>
       <a @click="color2">选择颜色2</a>
-      <a @click="slt">缩略图: 750×320</a>
+      <a @click="slt">缩略图: 750×213</a>
       <a @click="cover">cover: 1366×152</a>
     </div>
 
@@ -115,7 +115,7 @@
       data:{
         inputValue: 'FE-Notes',
         width: 750,
-        height: 320,
+        height: 213,
         colorValue: '',
         colorValue1: '#b45dea',
         colorValue2: '#f300af',
@@ -152,7 +152,7 @@
         // 缩略图 宽高
         slt(){
           this.width = 750
-          this.height = 320
+          this.height = 213
         },
         // 文章详情页宽度
         cover(){
