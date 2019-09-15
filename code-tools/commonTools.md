@@ -3,7 +3,7 @@
  * @Author: xn213 
  * @Date: 2019-09-13 20:40:01 
  * @Last Modified by: xn213
- * @Last Modified time: 2019-09-15 23:53:00
+ * @Last Modified time: 2019-09-16 00:00:50
  */
 ---
 
@@ -13,7 +13,7 @@
 
 ### 命令行 `Terminal Emulator`
 
-1. [Cmder.exe](https://cmder.net/) win 集成 git/ 部分linux命令
+1. [Cmder.exe](https://cmder.net/) win 集成 git/ 部分linux命令 [官方下载](https://github.com/cmderdev/cmder/releases/download/v1.3.12/cmder.zip) / [静态下载](http://xn213-img.test.upcdn.net/res/codetools/cmder.zip)
 
 ------------------------------------------------------------
 
