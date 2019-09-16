@@ -97,6 +97,8 @@
 
 - [红黑系: Monokai Pro](https://marketplace.visualstudio.com/items?itemName=monokai.theme-monokai-pro-vscode)
 
+- [Material Theme](https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme)
+
 - [设置背景: background]()
 
 ------------------------------------------------------------
